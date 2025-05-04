@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.0.1",
   "description": "A Quasar Project",
-  "productName": "Base App",
+  "productName": "EPA Tool",
   "author": "bachtiarpanjaitan <bachtiarpanjaitan0@gmail.com>",
   "private": true,
   "scripts": {

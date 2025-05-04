@@ -54,24 +54,38 @@ const linksList = [
   },
   {
     title: 'My Requests',
-    caption: 'Show all your Request',
+    caption: 'Show all your request',
     icon: 'content_paste_go',
     link: '/requests',
     role: [1]
   },
   {
     title: 'Users',
-    caption: 'Show All Users',
+    caption: 'Show all your users',
     icon: 'people',
     link: '/users',
     role: [1]
   },
   {
+    title: 'Projects',
+    caption: 'Your Projects',
+    icon: 'construction',
+    link: '/projects',
+    role: [1]
+  },
+  {
     title: 'My Task',
-    caption: 'Show all your Task',
+    caption: 'Show all your task',
     icon: 'assignment',
     link: '/tasks',
     role: [2]
+  },
+  {
+    title: 'Report',
+    caption: 'All needed report',
+    icon: 'bar_chart',
+    link: '/reports',
+    role: [1]
   },
   {
     title: 'Logout',
