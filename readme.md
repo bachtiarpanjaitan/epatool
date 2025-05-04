@@ -1,3 +1,12 @@
+***Requirements***
+- PHP versi 7.4+
+- Nodejs 20+
+- Sudah terinstall composer
+- PHP extension php-pgsql (active)
+- Database PostgreSQL
+- Quasar CLI
+
+
 **Run backend**
 - install dulu package composernya dengan cara <code>composer install</code>
 - migrasi databasenya dengan cara <code>php artisan migrate</code>
@@ -8,4 +17,4 @@
 **Run Frontend**
 - install dulu package yang dibutuhkan dengan cara <code> npm install </code>
 - jalankan frontend <code> quasar dev</code>
-- buka website di frontend url http://localhost:3030
+- buka website di frontend url http://localhost:8080
