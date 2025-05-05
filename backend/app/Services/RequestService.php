@@ -39,7 +39,7 @@ class RequestService extends Service {
             ['value' => 'title', 'label' => 'Title'],
             ['value' => 'status', 'label' => 'Status'],
             ['value' => 'description', 'label' => 'Description'],
-            ['value' => 'created', 'label' => 'Created At']
+            ['value' => 'created', 'label' => 'Created At', 'show' => false]
         ];
         $total = mRequest::where('user_id', $req->user()->id)->where('workspace_id',$req->workspace)->filter(false)->get();
 

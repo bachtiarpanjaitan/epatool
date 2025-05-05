@@ -173,6 +173,7 @@ export default defineComponent({
     },
     changeWorkspace(value) {
       localStorage.setItem('workspace', value)
+      this.$router.push('/')
     }
   },
   computed: {
