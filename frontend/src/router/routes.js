@@ -18,7 +18,6 @@ const routes = [
       { path: '/requests', component: () => import('pages/request/Index.vue')},
       { path: '/tasks', component: () => import('pages/task/Index.vue')},
       { path: '/users', component: () => import('pages/user/Index.vue')},
-      { path: '/projects', component: () => import('pages/project/Index.vue')},
       { path: '/reports', component: () => import('pages/report/Index.vue')}
     ]
   },

@@ -2,6 +2,7 @@ import { store } from 'quasar/wrappers'
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import auth from './auth'
+import common from './common'
 
 // import example from './module-example'
 
@@ -17,7 +18,8 @@ import auth from './auth'
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
-      auth
+      auth,
+      common
     },
 
     // enable strict mode (adds overhead!)

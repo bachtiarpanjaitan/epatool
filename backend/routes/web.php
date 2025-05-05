@@ -27,11 +27,10 @@ $router->group(['prefix' => 'api'], function() use ($router) {
             $router->group(['middleware' => ['auth', 'auth.header']], function() use ($router) {
                 $router->group(['prefix' => 'auth'], function() use ($router) {
                     $router->post('logout', 'AuthController@logout');
-
-                    /**
-                     * Write here for authorized routes
-                     */
-                    
+                });
+                $router->group(['prefix' => 'common'], function() use ($router) {
+                    $router->post('addworkspace', 'CommonController@addWorkspace');
+                    $router->get('getworkspace', 'CommonController@getworkspace');
                 });
             });
 

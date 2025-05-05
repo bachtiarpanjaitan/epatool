@@ -17,7 +17,6 @@
         async load(){
             await this.logout().then(resp => {
                 if(resp.status){
-                    console.log('oo')
                     this.$router.push('/auth/login')
                 }
             })

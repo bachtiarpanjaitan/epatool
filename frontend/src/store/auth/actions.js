@@ -21,10 +21,10 @@ export const login = async ({ rootGetters, state, commit }, payload) => {
 
 export const logout = async ({ rootGetters, state, commit }, payload) => {
   try {
-    const { data } = await api.post('/auth/logout')
+    // const { data } = await api.post('/auth/logout')
     localStorage.setItem('token', null)
     commit('setMe', null)
-    return data
+    return []
   } catch (err) {
     return { status: false, error: err }
   }

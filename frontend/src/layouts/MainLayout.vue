@@ -27,9 +27,23 @@
         <q-item-label
           header
         >
-          Navigation
+          <q-select
+            filled
+            v-model="wsselected"
+            :options="wsoptions"
+            label="Select Workspace"
+            dense
+            emit-value
+            map-options
+            @update:model-value="changeWorkspace"
+          >
+            <template v-slot:append>
+              <q-btn round dense flat icon="add" @click="addws"/>
+            </template>
+          </q-select>
         </q-item-label>
-          <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" :show="link.role.includes(me.role)"/>
+        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" :show="link.role.includes(me.role) && wsselected != null"/>
+        <EssentialLink title="Logout" link="/auth/logout" icon="logout" :role="[1,2]" :show="true"/>
       </q-list>
     </q-drawer>
 
@@ -41,7 +55,7 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
@@ -50,7 +64,7 @@ const linksList = [
     caption: 'Visualization of your data',
     icon: 'dashboard',
     link: '/',
-    role: [1,2]
+    role: [1,2],
   },
   {
     title: 'My Requests',
@@ -67,13 +81,6 @@ const linksList = [
     role: [1]
   },
   {
-    title: 'Projects',
-    caption: 'Your Projects',
-    icon: 'construction',
-    link: '/projects',
-    role: [1]
-  },
-  {
     title: 'My Task',
     caption: 'Show all your task',
     icon: 'assignment',
@@ -86,13 +93,6 @@ const linksList = [
     icon: 'bar_chart',
     link: '/reports',
     role: [1]
-  },
-  {
-    title: 'Logout',
-    caption: '',
-    icon: 'logout',
-    link: '/auth/logout',
-    role: [1,2]
   }
 ]
 
@@ -103,21 +103,84 @@ export default defineComponent({
     EssentialLink
   },
 
-  setup () {
+  data () {
     const leftDrawerOpen = ref(false)
-
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
+      wsoptions: [],
+      wsselected:null,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
+    }
+  },
+  methods: {
+    ...mapActions({
+      setWorkspace: 'common/addworkspace',
+      getWorkspace: 'common/getworkspace'
+    }),
+    addws () {
+      this.$q.dialog({
+        title: 'Add Workspace',
+        message: 'Fill the form to add a new workspace',
+        prompt: {
+          model: '',
+          type: 'text',
+          dense: true,
+          outlined: true,
+          label: 'Workspace Name',
+        },
+        cancel: true,
+        persistent: true,
+        ok: {
+          label: 'Save'
+        }
+      }).onOk(async data => {
+        if(data == null || data == '') {
+          this.$q.notify({
+            type: 'negative',
+            message: 'Workspace name cannot be empty'
+          })
+          throw new Error('Invalid input')
+        } else {
+          await this.setWorkspace({ name: data }).then((res) => { 
+            if (res.code == 200 ) {
+              this.getWorkspaces()
+              this.$q.notify({
+                type: 'positive',
+                message: 'Workspace added successfully'
+              })
+            }
+          })
+        }
+       
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      })
+    },
+    async getWorkspaces() {
+      this.wsoptions = []
+      await this.getWorkspace().then(({data}) => {
+        data.data.forEach((ws) => {
+          this.wsoptions.push({
+            label: ws.name,
+            value: ws.id
+          })
+        })
+      })
+    },
+    changeWorkspace(value) {
+      localStorage.setItem('workspace', value)
     }
   },
   computed: {
     ...mapGetters({
       me: 'auth/getMe'
     })
+  },
+  mounted () {
+    this.getWorkspaces()
   }
 })
 </script>
