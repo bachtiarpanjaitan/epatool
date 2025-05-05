@@ -31,6 +31,10 @@ $router->group(['prefix' => 'api'], function() use ($router) {
                 $router->group(['prefix' => 'common'], function() use ($router) {
                     $router->post('addworkspace', 'CommonController@addWorkspace');
                     $router->get('getworkspace', 'CommonController@getworkspace');
+                    $router->get('request/myrequest', 'RequestController@myrequest');
+                });
+                $router->group(['prefix' => 'request'], function() use ($router) {
+                    $router->get('myrequest', 'RequestController@myrequest');
                 });
             });
 

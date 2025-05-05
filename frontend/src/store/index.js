@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import auth from './auth'
 import common from './common'
+import request from './request'
 
 // import example from './module-example'
 
@@ -19,7 +20,8 @@ export default store(function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
       auth,
-      common
+      common,
+      request
     },
 
     // enable strict mode (adds overhead!)
