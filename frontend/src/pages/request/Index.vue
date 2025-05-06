@@ -48,7 +48,7 @@
                         </q-tr>
                         <q-tr v-show="props.expand" :props="props">
                             <q-td colspan="100%">
-                                <div class="text-left">This is expand slot for row above: {{ props.row.name }}.</div>
+                                <Detail :data="props.row" />
                             </q-td>
                         </q-tr>
                     </template>
@@ -82,13 +82,15 @@ import { defineComponent } from "vue";
 import { mapActions } from "vuex";
 import Pagination from "src/components/Pagination.vue";
 import FilterTable from "src/components/FilterTable.vue";
+import Detail from "src/components/Grid/Detail.vue";
 import Form from "./Form.vue";
 export default defineComponent({
     name: "RequestIndex",
     components: {
         Pagination,
         FilterTable,
-        Form
+        Form,
+        Detail
     },
 
     data() {
