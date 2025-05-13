@@ -40,7 +40,7 @@
                         <q-btn outline dense color="primary" class="q-mt-sm">Update Request</q-btn>  
                     </div>
                     <div class="col-md-4 q-pl-sm">
-                        <q-scroll-area style="height: 290px; max-width: 495px;">
+                        <q-scroll-area style="height: 290px;">
                             <q-list dense bordered>
                                 <q-item-label header color="primary">Feedbacks</q-item-label>
                                 <q-item clickable v-ripple>
