@@ -24,4 +24,9 @@ class CommonController extends Controller
         $result = $this->_service->getworkspace($req);
         return response()->json($result, $result['code']);
     }
+
+    public function getworkerusers(Request $req) {
+        $result = $this->_service->getworkerusers($req);
+        return response()->json($result, $result['code']);
+    }
 }

@@ -14,3 +14,8 @@ export const getworkspace = ({ rootGetters, state }) => {
   const request = {}
   return api.get('/common/getworkspace', request)
 }
+
+export const getusers = ({ rootGetters, state }) => {
+  const request = {}
+  return api.get('/common/getusers', request)
+}

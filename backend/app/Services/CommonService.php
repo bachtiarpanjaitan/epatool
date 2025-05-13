@@ -37,4 +37,9 @@ class CommonService extends Service {
         $wss = Workspace::where('user_id', auth()->user()->id)->get();
         return Response::ok('Workspace retrieved successfully',$wss);
     }
+
+    public function getworkerusers(Request $req) {
+        $users = User::select('id','name')->where('role', 2)->get();
+        return Response::ok('Worker users retrieved successfully',$users);
+    }
 }

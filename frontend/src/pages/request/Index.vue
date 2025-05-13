@@ -48,7 +48,7 @@
                         </q-tr>
                         <q-tr v-show="props.expand" :props="props">
                             <q-td colspan="100%">
-                                <Detail :data="props.row" />
+                                <Detail :data="props.row" :users="workers" />
                             </q-td>
                         </q-tr>
                     </template>
@@ -111,6 +111,7 @@ export default defineComponent({
             hDialog: false,
             maximizedToggle: false,
             users: [],
+            workers: [],
             form: {
                 name: '',
                 branch_id: '',
@@ -128,7 +129,8 @@ export default defineComponent({
     },
     methods: {
         ...mapActions({
-            loadRequests: 'request/myrequest'
+            loadRequests: 'request/myrequest',
+            loadWorkers: 'common/getusers'
         }),
         actDelete(row) { },
         showForm(row) {
@@ -189,6 +191,12 @@ export default defineComponent({
             }).catch(err => {
                 console.log(err)
                 this.loading = false
+            })
+
+            this.loadWorkers().then(({data}) => {
+                this.workers = data.data
+            }).catch(err => {
+                console.log(err)
             })
         }
 
