@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          EPA TOOL TEST GIT
+          EPA TOOL TEST PULL
         </q-toolbar-title>
         <div class="q-mx-md">Welcome <b>{{ me.name }}</b></div>
       </q-toolbar>
