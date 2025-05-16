@@ -48,7 +48,7 @@
                         </q-tr>
                         <q-tr v-show="props.expand" :props="props">
                             <q-td colspan="100%">
-                                <Detail :data="props.row" :users="workers" />
+                                <Detail :data="props.row" :users="workers" @load="load()" />
                             </q-td>
                         </q-tr>
                     </template>
@@ -69,7 +69,7 @@
                         transition-show="slide-up"
                         transition-hide="slide-down"
                         >
-                            <Form @done="reload()" :loading="loading" :data="selectedRow" :maximizedToggle="maximizedToggle"/>
+                            <Form @done="reload()" :loading="loading" :users="workers" :data="selectedRow" :maximizedToggle="maximizedToggle"/>
                     </q-dialog>
                 </div>
 

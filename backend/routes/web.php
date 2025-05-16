@@ -36,6 +36,8 @@ $router->group(['prefix' => 'api'], function() use ($router) {
                 });
                 $router->group(['prefix' => 'request'], function() use ($router) {
                     $router->get('myrequest', 'RequestController@myrequest');
+                    $router->post('update/{id}', 'RequestController@update');
+                    $router->post('create', 'RequestController@create');
                 });
             });
 

@@ -1,35 +1,66 @@
 <template>
     <div>
         <q-card>
-            <q-card-section>
-                <div class="col-md-12 row">
-                    <div class="col-md-3">
-                        <q-select
-                            dense
-                            outlined
-                            :options="users"
-                            label="Assign user"
-                            v-model="form.assign_users"
-                            multiple
-                            use-chips
-                            option-label="name"
-                            option-value="id"
-                            />
-                    </div>
-                     <div class="col-md-2 q-pl-sm">
-                        <q-select
-                            dense
-                            outlined
-                            :options="statuses"
-                            label="Set Status"
-                            v-model="data.status"
-                            />
-                    </div>
-                </div>
-            </q-card-section>
              <q-card-section horizontal>
-                <div class="row q-pl-md q-pb-sm">
+                <div class="row q-pl-md q-pt-sm q-pb-sm">
                     <div class="col-md-5">
+                         <div class="col-md-12 q-pb-sm row">
+                            <div class="col-md-6">
+                                <q-select
+                                    dense
+                                    outlined
+                                    :options="users"
+                                    label="Assign user"
+                                    v-model="data.assign_users"
+                                    multiple
+                                    use-chips
+                                    option-label="name"
+                                    option-value="id"
+                                    />
+                            </div>
+                            <div class="col-md-6 q-pl-sm">
+                                <q-select
+                                    dense
+                                    outlined
+                                    :options="statuses"
+                                    label="Set Status"
+                                    v-model="data.status"
+                                    @update:model-value="updateRequest"
+                                    />
+                            </div>
+                        </div>
+                        <div class="row col-12">
+                             <div class="col-md-6">
+                                <q-input label="From Date" filled dense v-model="data.from_date" mask="date" :rules="['date']">
+                                    <template v-slot:append>
+                                        <q-icon name="event" class="cursor-pointer">
+                                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                            <q-date v-model="data.from_date" mask="YYYY-MM-DD">
+                                            <div class="row items-center justify-end">
+                                                <q-btn v-close-popup label="Close" color="primary" flat />
+                                            </div>
+                                            </q-date>
+                                        </q-popup-proxy>
+                                        </q-icon>
+                                    </template>
+                                </q-input>
+                            </div>
+                            <div class="col-md-6 q-pl-sm">
+                                <q-input label="To Date" filled dense v-model="data.to_date" mask="date" :rules="['date']">
+                                    <template v-slot:append>
+                                        <q-icon name="event" class="cursor-pointer">
+                                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                            <q-date v-model="data.to_date" mask="YYYY-MM-DD">
+                                            <div class="row items-center justify-end">
+                                                <q-btn v-close-popup label="Close" color="primary" flat />
+                                            </div>
+                                            </q-date>
+                                        </q-popup-proxy>
+                                        </q-icon>
+                                    </template>
+                                </q-input>
+                            </div>
+                        </div>
                         <q-input class="q-pb-sm" outlined dense v-model="data.title" label="Title" />
                         <q-editor :readonly="me.role != 1" class="my-editor" dense height="46vh" v-model="data.description" toolbar-text-color="white"
                         toolbar-toggle-color="yellow-8"
@@ -37,31 +68,37 @@
                         :definitions="{
                             bold: {label: 'Bold', icon: null, tip: 'My bold tooltip'}
                         }"></q-editor>
-                        <q-btn outline dense color="primary" class="q-mt-sm">Update Request</q-btn>  
+                        <q-btn outline dense color="primary" class="q-mt-sm" @click="updateRequest">Update Request</q-btn>  
                     </div>
                     <div class="col-md-4 q-pl-sm">
-                        <q-scroll-area style="height: 290px;">
-                            <q-list dense bordered>
-                                <q-item-label header color="primary">Feedbacks</q-item-label>
-                                <q-item clickable v-ripple>
-                                    <q-item-section>
-                                    <q-item-label caption>
-                                        Set the content filtering level to restrict
-                                        apps that can be downloaded
-                                    </q-item-label>
-                                    </q-item-section>
-                                </q-item>
-                                <q-item clickable v-ripple>
-                                    <q-item-section>
-                                    <q-item-label caption>
-                                        Require password for purchase or use
-                                        password to restrict purchase
-                                    </q-item-label>
-                                    </q-item-section>
-                                </q-item>
-                            </q-list>
+                        <div class="q-item__label q-item__label--header"> Feedbacks</div>
+                        <q-scroll-area style="height: 305px;">
+                            <div class="row items-start">
+                                <q-card style="width: 100%;" bordered v-for="fb in data.feedbacks" :key="fb.id">
+                                    <q-card-section class="row q-gutter-sm items-start q-pr-sm">
+                                        <q-avatar color="teal" text-color="white" size="20px">
+                                        {{ fb.user.name.charAt(0).toUpperCase() }}
+                                        </q-avatar>
+
+                                        <div class="col">
+                                            <div class="text-subtitle2">{{ fb.user.name }}</div>
+                                        </div>
+
+                                        <div class="text-overline text-right" style="min-width: 90px;">
+                                        {{ formatTanggalIndo(log.created_at) }}
+                                        </div>
+                                    </q-card-section>
+                                    <q-card-section><div v-html="log.feedback" style="font-style: italic; text-wrap: wrap;" class="text-primary"></div></q-card-section>
+                                </q-card>
+                                <q-card bordered flat style="width: 100%;" v-if="data.feedbacks == null || data.feedbacks.len <= 0" >
+                                    <q-card-section>
+                                        <div class="text-center text-red text-italic text-weight-thin">Feedback Nothing to show</div>
+                                    </q-card-section>
+                                </q-card>
+
+                            </div>
                         </q-scroll-area>
-                        <q-editor class="my-editor q-mt-sm"  :dense="$q.screen.lt.md" height="10vh" v-model="form.feedback" toolbar-text-color="white"
+                        <q-editor class="my-editor q-mt-sm"  :dense="$q.screen.lt.md" height="10vh" v-model="feedback" toolbar-text-color="white"
                         toolbar-toggle-color="yellow-8"
                         toolbar-bg="primary"
                         :toolbar="[
@@ -149,56 +186,38 @@
                             verdana: 'Verdana'
                         }" >
                         </q-editor>
-                        <q-btn outline dense color="primary" class="q-mt-sm">Send Feedback</q-btn>  
+                        <q-btn outline dense color="primary" class="q-mt-sm">Create Feedback</q-btn>  
                     </div>
                     <div class="col-md-3 q-px-sm">
-                        <q-scroll-area style="height: 350px; max-width: 400px;">
-                             <q-list bordered class="rounded-borders" style="max-width: 350px">
-                                <q-item-label header color="primary">History</q-item-label>
-                                <q-item clickable v-ripple>
-                                    <q-item-section avatar>
-                                    <q-avatar>
-                                        <img src="https://cdn.quasar.dev/img/avatar2.jpg">
-                                    </q-avatar>
-                                    </q-item-section>
+                        <div class="q-item__label q-item__label--header"> Request Logs</div>
+                        <q-scroll-area style="height: 520px; max-width: 400px;">
+                            <div class="row items-start">
+                               
+                                <q-card bordered flat style="width: 100%;" v-if="data.logs.length <= 0" >
+                                    <q-card-section>
+                                        <div class="text-center text-red text-italic text-weight-thin">This request have nothing history log(s)</div>
+                                    </q-card-section>
+                                </q-card>
+                                <template v-else>
+                                     <q-card flat style="width: 100%;" bordered v-for="log in data.logs" :key="log.id">
+                                        <q-card-section class="row q-gutter-sm items-start q-pr-sm" :horizontal="true">
+                                            <q-avatar color="teal" text-color="white" size="20px">
+                                            {{ log.user.name.charAt(0).toUpperCase() }}
+                                            </q-avatar>
 
-                                    <q-item-section>
-                                    <q-item-label lines="1">Brunch this weekend?</q-item-label>
-                                    <q-item-label caption lines="2">
-                                        <span class="text-weight-bold">Janet</span>
-                                        -- I'll be in your neighborhood doing errands this
-                                        weekend. Do you want to grab brunch?
-                                    </q-item-label>
-                                    </q-item-section>
+                                            <div class="col"><div class="text-body2 text-grey">{{ log.user.name }}</div></div>
 
-                                    <q-item-section side top>
-                                    1 min ago
-                                    </q-item-section>
-                                </q-item>
-
-                                <q-separator inset="item" />
-
-                                <q-item clickable v-ripple>
-                                    <q-item-section avatar>
-                                    <q-avatar>
-                                        <img src="https://cdn.quasar.dev/img/avatar4.jpg">
-                                    </q-avatar>
-                                    </q-item-section>
-
-                                    <q-item-section>
-                                    <q-item-label lines="1">Linear Project</q-item-label>
-                                    <q-item-label caption lines="2">
-                                        <span class="text-weight-bold">John</span>
-                                        -- Can we schedule a call for tomorrow?
-                                    </q-item-label>
-                                    </q-item-section>
-
-                                    <q-item-section side top>
-                                    1 min ago
-                                    </q-item-section>
-                                </q-item>
-                                </q-list>
+                                            <div class="text-sm text-weight-light text-right" style="min-width: 90px;">
+                                            {{ formatTanggalIndo(log.created_at) }}
+                                            </div>
+                                        </q-card-section>
+                                        <q-separator inset />
+                                        <q-card-section><div v-html="log.description" style="text-wrap: wrap;" class="text-primary"></div></q-card-section>
+                                    </q-card>
+                                </template>
+                            </div>
                         </q-scroll-area>
+                        
                     </div>
                 </div>
             </q-card-section>
@@ -229,10 +248,7 @@ export default {
     },
     data() {
         return {
-            form: {
-                feedback: '',
-                assign_users: []
-            },
+            feedback: '',
             statuses: ['new', 'onprogress','review','done', 'reject'],
         }
     },
@@ -242,9 +258,50 @@ export default {
         })
     },
     methods: {
-        // ...mapActions({
-        //     loadUsers: 'common/getusers'
-        // }),
+        ...mapActions({
+            update: 'request/updateRequest',
+        }),
+        async updateRequest() {
+            console.log('update request', this.data)
+            await this.update(this.data).then((res) => {
+                if (res.status) {
+                    this.$q.notify({
+                        type: 'positive',
+                        message: 'Request updated successfully'
+                    })
+                    this.$emit('load')
+                } else {
+                    this.$q.notify({
+                        type: 'negative',
+                        message: 'Failed to update request'
+                    })
+                }
+                
+            }).catch((err) => {
+                console.log('update request error', err)
+                this.$q.notify({
+                    type: 'negative',
+                    message: 'Failed to update request'
+                })
+            })
+        },
+        formatTanggalIndo(tgl) {
+            const date = new Date(tgl)
+
+            const tanggal = date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            })
+
+            const jam = date.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            })
+
+            return `${tanggal} ${jam}`
+        }
     },
 }
 </script>

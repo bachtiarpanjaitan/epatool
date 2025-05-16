@@ -19,4 +19,14 @@ class RequestController extends Controller
         $result = $this->_service->myrequesttable($req);
         return response()->json($result, $result['code']);
     }
+
+    public function update(Request $req,$id) {
+        $result = $this->_service->update($req,$id);
+        return response()->json($result, $result['code']);
+    }
+
+    public function create(Request $req) {
+        $result = $this->_service->create($req);
+        return response()->json($result, $result['code']);
+    }
 }

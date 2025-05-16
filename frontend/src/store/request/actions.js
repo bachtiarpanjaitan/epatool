@@ -9,3 +9,20 @@ export function myrequest(context, params = {}) {
     })
   }
   
+export const updateRequest = async ({ rootGetters, state, commit }, payload) => {
+  try {
+    const { data } = await api.post('/request/update/'+ payload.id, payload)
+    return data
+  } catch (err) {
+    return { status: false, error: err }
+  }
+}
+
+export const createRequest = async ({ rootGetters, state, commit }, payload) => {
+  try {
+    const { data } = await api.post('/request/create', payload)
+    return data
+  } catch (err) {
+    return { status: false, error: err }
+  }
+}
