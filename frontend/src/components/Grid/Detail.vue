@@ -190,7 +190,7 @@
                     </div>
                     <div class="col-md-3 q-px-sm">
                         <div class="q-item__label q-item__label--header"> Request Logs</div>
-                        <q-scroll-area style="height: 520px; max-width: 400px;">
+                        <q-scroll-area style="height: 520px;">
                             <div class="row items-start">
                                
                                 <q-card bordered flat style="width: 100%;" v-if="data.logs.length <= 0" >

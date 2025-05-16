@@ -115,15 +115,15 @@
         },
         data(){
             return {
-                // data: {
-                //     assign_users: [],
-                //     title: '',
-                //     description: '',
-                //     from_date: '',
-                //     to_date: '',
-                //     workspace_id: 0,
-                // },
-                data: {"assign_users":[{"id":2,"name":"Worker"}],"title":"Test","description":"Test","from_date":"2025/05/01","to_date":"2025/05/13","workspace_id":"6"},
+                data: {
+                    assign_users: [],
+                    title: '',
+                    description: '',
+                    from_date: '',
+                    to_date: '',
+                    workspace_id: 0,
+                },
+                // data: {"assign_users":[{"id":2,"name":"Worker"}],"title":"Test","description":"Test","from_date":"2025/05/01","to_date":"2025/05/13","workspace_id":"6"},
                 inputRules: [
                     (v) => !!v || `Cannot be empty`,
                 ],
