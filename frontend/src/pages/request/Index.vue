@@ -24,16 +24,14 @@
                         <q-tr :props="props" style="cursor: pointer;">
                             <q-td v-for="col in props.cols" :key="col.name" :props="props">
                                 <template v-if="col.name === 'action'">
-                                    <!-- <q-btn size="xs" outline @click="showDetail(props.row)" color="primary" icon="read_more" align="between"/> -->
-                                    <!-- <q-btn size="xs" outline @click="showForm(props.row)" color="primary" icon="edit" align="between"/> -->
-                                    <!-- <q-btn size="xs" outline @click="viewHistory(props.row)" color="primary" icon="list" align="between"/> -->
                                     <q-btn size="xs" outline @click="actDelete(props.row)" color="red" icon="delete" align="between"/>
                                 </template>
                                 <template v-if="col.name === 'title'">
                                     <a class="text-blue" style="cursor: pointer;" @click="props.expand = !props.expand" >{{ col.value }}</a>
                                 </template>
                                 <template v-else-if="col.name === 'description'">
-                                    {{ col.value.length > 100 ? col.value.substring(0, 100) + '...' : col.value }}
+                                    <q-tooltip v-html="stripHtmlTags(col.value)" class="custom-tooltip"></q-tooltip>
+                                    {{ col.value.length > 100 ? stripHtmlTags(col.value).substring(0, 100) + '...' : col.value }}
                                 </template>
                                 <template v-else-if="col.name === 'status'">
                                     <q-badge outline color="primary">{{ col.value }}</q-badge>
@@ -77,7 +75,17 @@
         </div>
     </q-page>
 </template>
+<style>
+    .custom-tooltip {
+        background-color: teal !important; /* warna background */
+        color: white !important;   
+        font-size: 14px !important;  /* ukuran font */
+        padding: 8px 12px !important;           /* warna teks */
+        max-width: 600px !important;
+    }
+</style>
 <script>
+
 import { defineComponent } from "vue";
 import { mapActions } from "vuex";
 import Pagination from "src/components/Pagination.vue";
@@ -198,6 +206,15 @@ export default defineComponent({
             }).catch(err => {
                 console.log(err)
             })
+        },
+        decodeHtmlEntities(str) {
+            const txt = document.createElement('textarea');
+            txt.innerHTML = str;
+            return txt.value;
+        },
+        stripHtmlTags(html) {
+            const decoded = this.decodeHtmlEntities(html);
+            return decoded.replace(/<[^>]*>/g, '');
         }
 
     },
