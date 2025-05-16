@@ -27,7 +27,7 @@
                                     <q-btn size="xs" outline @click="actDelete(props.row)" color="red" icon="delete" align="between"/>
                                 </template>
                                 <template v-if="col.name === 'title'">
-                                    <a class="text-blue" style="cursor: pointer;" @click="props.expand = !props.expand" >{{ col.value }}</a>
+                                    <a class="text-primary" style="cursor: pointer;" @click="props.expand = !props.expand" >{{ col.value }}</a>
                                 </template>
                                 <template v-else-if="col.name === 'description'">
                                     <q-tooltip v-html="stripHtmlTags(col.value)" class="custom-tooltip"></q-tooltip>
@@ -77,7 +77,7 @@
 </template>
 <style>
     .custom-tooltip {
-        background-color: teal !important; /* warna background */
+        background-color: #00564d !important; /* warna background */
         color: white !important;   
         font-size: 14px !important;  /* ukuran font */
         padding: 8px 12px !important;           /* warna teks */
