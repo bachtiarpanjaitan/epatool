@@ -72,7 +72,7 @@
                     </div>
                     <div class="col-md-4 q-pl-sm">
                         <div class="q-item__label q-item__label--header"> Feedbacks</div>
-                        <q-scroll-area style="height: 305px;">
+                        <q-scroll-area style="height: 357px;">
                             <div class="row items-start">
                                 <q-card style="width: 100%;" bordered v-for="fb in data.feedbacks" :key="fb.id">
                                     <q-card-section class="row q-gutter-sm items-start q-pr-sm">
