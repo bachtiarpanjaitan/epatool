@@ -165,7 +165,7 @@ class RequestService extends Service {
             $log->status = $status;
             $log->request_id = $request_id;
             $log->user_id = Auth::user()->id;
-            $log->description =  Auth::user()->name.' has been change status request from <b>'.$oldStatus. '</b> to <b>'.$status.'</b>';
+            $log->description =  Auth::user()->name.' has been change request status from <b>'.$oldStatus. '</b> to <b>'.$status.'</b>';
         }
         $log->save();
     }
