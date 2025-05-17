@@ -21,18 +21,18 @@ jobs:
           cd /var/www/html/epatool
 
           echo "🔄 Pull update dari git"
-          git pull origin main
+          git pull origin master
 
           echo "📦 Update backend dependencies"
           cd backend
           composer install --no-interaction --prefer-dist --optimize-autoloader
 
           echo "⚙️ Jalankan migrate"
-          php artisan migrate --force
+          php artisan migrate
 
           echo "📦 Update frontend dependencies"
           cd ../frontend
           npm install
 
           echo "🏗️ Build Quasar frontend"
-          npm run build
+          quasar build
