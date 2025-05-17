@@ -119,7 +119,8 @@
                                             </div>
 
                                             <div class="text-sm text-weight-bold text-right text-primary" style="min-width: 90px;">
-                                            {{ formatTanggalIndo(fb.created_at) }}
+                                                <q-icon :name="fb.is_read ? 'visibilty': 'visibility_off'"/>
+                                                {{ formatTanggalIndo(fb.created_at) }}
                                             </div>
                                         </q-card-section>
                                         <q-separator inset />
@@ -127,7 +128,9 @@
                                             <q-badge outline class="text-caption text-primary">{{ fb.feedback_type }}</q-badge>
                                             <q-badge outline class="text-caption text-purple q-ml-sm" v-if="fb.status == 'open'">{{ fb.status }}</q-badge>
                                             <q-badge outline class="text-caption text-red q-ml-sm" v-if="fb.status == 'closed'">{{ fb.status }}</q-badge>
+                                            <q-badge outline class="text-caption text-red q-ml-sm" v-if="fb.status == 'closed'">{{ fb.status }}</q-badge>
                                         </div>
+                                        
                                         <q-card-section><div v-html="fb.feedback" style="text-wrap: wrap;" class="text-grey-9"></div></q-card-section>
                                     </q-card>
                                     <q-card bordered class="col-md-12" flat v-if="data.feedbacks == null || data.feedbacks.length <= 0" >
