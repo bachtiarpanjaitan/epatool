@@ -7,7 +7,8 @@ use App\Models\{
     Workspace,
     Request as mRequest,
     RequestAssigned,
-    RequestLog
+    RequestLog,
+    RequestFeedback
 };
 use Illuminate\Support\Facades\Validator;
 use Btx\Http\Libraries\ApiResponse;
@@ -32,7 +33,7 @@ class RequestService extends Service {
             return Response::badRequest($validated->errors()->first());
         }
 
-        $data = mRequest::with('assigned.user','logs.user')->where('user_id', $req->user()->id)->where('workspace_id',$req->workspace)->filter()->get();
+        $data = mRequest::with('assigned.user','logs.user','feedbacks.user')->where('user_id', $req->user()->id)->where('workspace_id',$req->workspace)->filter()->get();
         // dd($data);
         $data = $data->map(function ($item) {
             $t = Carbon::parse($item->created_at)->format('l, d F Y H:i');
@@ -154,6 +155,43 @@ class RequestService extends Service {
         }
     }
 
+    public function createFeedback(Request $req){
+         $request = $req->all();
+        try {
+            $validated = Validator::make($req->all(), [
+                'type' => 'required',
+                'feedback' => 'required',
+                'request_id' => 'required',
+            ] ,[
+                'required' => ':attribute cannot be null',
+                'string' => ':attribute must be string',
+            ]);
+    
+            if ($validated->fails()) {
+                return Response::badRequest($validated->errors()->first());
+            }
+
+            DB::beginTransaction();
+            $data = RequestFeedback::create([
+                'request_id' => $request['request_id'],
+                'user_id' => Auth::user()->id,
+                'feedback_type' => $request['type'],
+                'feedback' => $request['feedback'],
+                'status' => 'open',
+                'is_read' => 0
+            ]);
+
+            $this->saveHistoryFeedback($request['request_id'],$request['type'],'open');
+
+            DB::commit();
+            return Response::ok('Feedback Created',$data);
+
+        }catch (\Exception $e) {
+            DB::rollBack();
+            return Response::internalServerError($e->getMessage());
+        }
+    }
+
     private function saveHistory($request_id,$oldStatus='', $status = 'new'){
         $log = new RequestLog();
         if(empty($oldStatus)){
@@ -167,6 +205,16 @@ class RequestService extends Service {
             $log->user_id = Auth::user()->id;
             $log->description =  Auth::user()->name.' has been change request status from <b>'.$oldStatus. '</b> to <b>'.$status.'</b>';
         }
+        $log->save();
+    }
+
+    private function saveHistoryFeedback($request_id, $type, $status){
+        $log = new RequestLog();
+        $log->status = $status;
+        $log->request_id = $request_id;
+        $log->user_id = Auth::user()->id;
+        $log->description = Auth::user()->name.' created new feedback with type <b>'.$type.'</b> and status <b>'.$status.'</b>';
+
         $log->save();
     }
 }

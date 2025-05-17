@@ -26,4 +26,9 @@ class Request extends Model
     {
         return $this->hasMany(RequestLog::class, 'request_id', 'id');
     }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(RequestFeedback::class, 'request_id', 'id');
+    }
 }

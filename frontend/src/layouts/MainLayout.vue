@@ -168,9 +168,8 @@ export default defineComponent({
             value: ws.id
           })
         })
-        this.wsselected = this.wsoptions.find(x => x.value == localStorage.getItem('workspace')) || data.data[0].id
-        console.log(this.wsselected)
-        localStorage.setItem('workspace', this.wsselected.value)
+        this.wsselected = this.wsoptions.find(x => x.value == localStorage.getItem('workspace'))
+        if(this.wsselected != undefined) localStorage.setItem('workspace', this.wsselected.value)
       })
     },
     changeWorkspace(value) {

@@ -26,3 +26,12 @@ export const createRequest = async ({ rootGetters, state, commit }, payload) => 
     return { status: false, error: err }
   }
 }
+
+export const createFeedback = async ({ rootGetters, state, commit }, payload) => {
+  try {
+    const { data } = await api.post('/request/feedback/create', payload)
+    return data
+  } catch (err) {
+    return { status: false, error: err }
+  }
+}

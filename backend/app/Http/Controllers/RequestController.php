@@ -29,4 +29,9 @@ class RequestController extends Controller
         $result = $this->_service->create($req);
         return response()->json($result, $result['code']);
     }
+
+    public function createFeedback(Request $req){
+        $result = $this->_service->createFeedback($req);
+        return response()->json($result, $result['code']);
+    }
 }
