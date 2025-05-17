@@ -13,9 +13,9 @@ jobs:
     - name: 🚀 Deploy ke Server via SSH
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_KEY }}
+        host: ${{ secrets.SSH_HOST_BASAPADI }}
+        username: ${{ secrets.SSH_USER_BASAPADI }}
+        key: ${{ secrets.SSH_KEY_BASAPADI }}
         script: |
           echo "📁 Masuk ke direktori project"
           cd /var/www/namaproject
