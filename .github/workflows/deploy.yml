@@ -1,0 +1,38 @@
+name: Deploy Laravel + Quasar ke Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🚀 Deploy ke Server via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          echo "📁 Masuk ke direktori project"
+          cd /var/www/namaproject
+
+          echo "🔄 Pull update dari git"
+          git pull origin main
+
+          echo "📦 Update backend dependencies"
+          cd backend
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+
+          echo "⚙️ Jalankan migrate"
+          php artisan migrate --force
+
+          echo "📦 Update frontend dependencies"
+          cd ../frontend
+          npm install
+
+          echo "🏗️ Build Quasar frontend"
+          npm run build
